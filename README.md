@@ -8,12 +8,13 @@ This project provides a script to convert a webpage into a GIF using Puppeteer, 
 - npm
 - Puppeteer
 - ffmpeg
+- fluent-ffmpeg
 
 ## Installation
 
 1. Install Node.js and npm. You can download them from the official [Node.js website](https://nodejs.org/).
 2. Clone the repository or download the `convert.js` file.
-3. Navigate to the project directory and run `npm install puppeteer ffmpeg`.
+3. Navigate to the project directory and run `npm install puppeteer ffmpeg fluent-ffmpeg`.
 
 ## Usage
 
