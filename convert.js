@@ -1,8 +1,9 @@
 const puppeteer = require("puppeteer");
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
+const path = require("path");
 
-async function convertHTMLToGIF(url, outputPath) {
+async function convertHTMLToGIF(url) {
   const browser = await puppeteer.launch({
     headless: true,
     executablePath:
@@ -11,11 +12,20 @@ async function convertHTMLToGIF(url, outputPath) {
   const page = await browser.newPage();
   await page.goto(url);
 
+  const title = await page.title();
+  const dir = path.join(__dirname, title);
+
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+
+  const outputPath = path.join(dir, "output.gif");
+
   const interval = 100;
   const duration = 1000;
   const frameCount = duration / interval;
 
-  const tempFilePath = `${outputPath}.tmp`;
+  const tempFilePath = path.join(dir, "output.tmp");
 
   for (let i = 0; i < frameCount; i++) {
     await page.screenshot({ path: `${tempFilePath}-${i}.png` });
@@ -39,4 +49,4 @@ async function convertHTMLToGIF(url, outputPath) {
   }
 }
 
-convertHTMLToGIF("https://www.google.com", "output.gif");
+convertHTMLToGIF("https://www.google.com");
