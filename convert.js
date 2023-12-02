@@ -1,5 +1,7 @@
 const puppeteer = require("puppeteer");
+const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
 const ffmpeg = require("fluent-ffmpeg");
+ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
@@ -26,7 +28,7 @@ async function convertHTMLToGIF() {
   const page = await browser.newPage();
   await page.goto(url);
 
-  const title = await page.title();
+  const title = (await page.title()).replace(/[<>:"/\\|?*]+/g, "_");
   const dir = path.join(__dirname, "Output", title);
 
   if (!fs.existsSync(dir)) {

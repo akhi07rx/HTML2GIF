@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "ffmpeg": "^0.0.4",
     "fluent-ffmpeg": "^2.1.2",
     "puppeteer": "^21.5.2"
