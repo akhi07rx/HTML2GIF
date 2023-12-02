@@ -19,6 +19,7 @@ async function convertHTMLToGIF() {
 
   const browser = await puppeteer.launch({
     headless: true,
+    ignoreHTTPSErrors: true,
     executablePath:
       "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", // your path to Chrome
   });
@@ -26,10 +27,10 @@ async function convertHTMLToGIF() {
   await page.goto(url);
 
   const title = await page.title();
-  const dir = path.join(__dirname, title);
+  const dir = path.join(__dirname, "Output", title);
 
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+    fs.mkdirSync(dir, { recursive: true });
   }
 
   const outputPath = path.join(dir, "output.gif");
