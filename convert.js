@@ -2,8 +2,21 @@ const puppeteer = require("puppeteer");
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
 const path = require("path");
+const readline = require("readline");
 
-async function convertHTMLToGIF(url) {
+async function convertHTMLToGIF() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  const url = await new Promise((resolve) => {
+    rl.question("Please enter the domain address: ", (url) => {
+      rl.close();
+      resolve(url);
+    });
+  });
+
   const browser = await puppeteer.launch({
     headless: true,
     executablePath:
@@ -49,4 +62,4 @@ async function convertHTMLToGIF(url) {
   }
 }
 
-convertHTMLToGIF("https://www.google.com");
+convertHTMLToGIF();
