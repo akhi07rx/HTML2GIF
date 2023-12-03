@@ -62,7 +62,7 @@ async function convertHTMLToGIF() {
 
   const tempFilePath = path.join(dir, "output.tmp");
 
-  const bar = new ProgressBar(":bar", { total: frameCount });
+  const bar = new ProgressBar(":bar :percent", { total: frameCount });
 
   for (let i = 0; i < frameCount; i++) {
     await page.screenshot({ path: `${tempFilePath}-${i}.png` });
