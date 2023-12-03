@@ -16,7 +16,8 @@ const isValidURL = (url) => {
 };
 
 async function convertHTMLToGIF() {
-  console.log("Welcome to the HTML to GIF Conversion Tool");
+  console.log("");
+  console.log("Welcome to HTML2GIF");
   console.log(
     "Please provide the URL of the webpage you want to convert to a GIF:"
   );
