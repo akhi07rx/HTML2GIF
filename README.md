@@ -1,6 +1,6 @@
 # HTML to GIF Converter (HTML2GIF)
 
-HTML2GIF is a Node.js script that uses Puppeteer and ffmpeg to convert a webpage into a GIF. The script navigates to a webpage, takes screenshots at regular intervals, and then combines these screenshots into a GIF.
+HTML2GIF is a Node.js script that uses Puppeteer and ffmpeg to convert a webpage into a GIF. The script navigates to a webpage, takes screenshots at regular intervals, and then combines these screenshots into a GIF. It also provides a progress bar with percentage completion during the screenshot capture process.
 
 ## Screenshot
 
@@ -11,6 +11,7 @@ HTML2GIF is a Node.js script that uses Puppeteer and ffmpeg to convert a webpage
 - Puppeteer
 - ffmpeg
 - fluent-ffmpeg
+- progress
 
 ## Installation
 
@@ -18,10 +19,10 @@ Before you begin, ensure you have met the following requirements:
 
 1. Install Node.js and npm. You can download them from the official [Node.js website](https://nodejs.org/).
 2. Clone the repository or download the `convert.js` file.
-3. Navigate to the project directory and run `npm install puppeteer ffmpeg fluent-ffmpeg`.
+3. Navigate to the project directory and run `npm install puppeteer @ffmpeg-installer/ffmpeg progress`.
 
 ```bash
-npm install puppeteer @ffmpeg-installer/ffmpeg
+npm install puppeteer @ffmpeg-installer/ffmpeg progress
 ```
 
 ## Usage
@@ -71,6 +72,7 @@ This project was made possible thanks to the following resources:
 - [Puppeteer](https://pptr.dev/): A Node.js library which provides a high-level API to control Chrome or Chromium over the DevTools Protocol. Puppeteer runs headless by default but can be configured to run full (non-headless) Chrome or Chromium.
 - [fluent-ffmpeg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg): A fluent API to [FFmpeg](https://ffmpeg.org/).
 - [ffmpeg-installer](https://www.npmjs.com/package/@ffmpeg-installer/ffmpeg): An npm package that downloads FFmpeg binaries for the correct platform and includes them in your node_modules.
+- [progress](https://www.npmjs.com/package/progress): A flexible progress bar for node.js and the browser.
 - [Stack Overflow](https://stackoverflow.com/): A platform for developers to learn and share their programming knowledge.
 
 These resources provided the necessary documentation and guides that were instrumental in the development of this project. A big thank you to all the contributors of these resources! 😊
