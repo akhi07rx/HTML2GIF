@@ -6,14 +6,32 @@ const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
 
+const CHROME_PATH =
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"; // Path to Chrome executable
+
+const isValidURL = (url) => {
+  const regex =
+    /(http|https):\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  return regex.test(url);
+};
+
 async function convertHTMLToGIF() {
+  console.log("Welcome to the HTML to GIF Conversion Tool");
+  console.log(
+    "Please provide the URL of the webpage you want to convert to a GIF:"
+  );
+
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
 
   const url = await new Promise((resolve) => {
-    rl.question("Please enter the domain address: ", (url) => {
+    rl.question("", (url) => {
+      if (!isValidURL(url)) {
+        console.error("Invalid URL provided. Please enter a valid URL.");
+        return;
+      }
       rl.close();
       resolve(url);
     });
@@ -22,8 +40,7 @@ async function convertHTMLToGIF() {
   const browser = await puppeteer.launch({
     headless: true,
     ignoreHTTPSErrors: true,
-    executablePath:
-      "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", // your path to Chrome
+    executablePath: CHROME_PATH,
   });
   const page = await browser.newPage();
   await page.goto(url);
