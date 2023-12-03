@@ -8,7 +8,7 @@ const readline = require("readline");
 const ProgressBar = require("progress");
 
 const CHROME_PATH =
-  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"; // Path to Chrome.exe
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 
 const isValidURL = (url) => {
   const regex =
@@ -46,6 +46,7 @@ async function convertHTMLToGIF() {
   });
   const page = await browser.newPage();
   await page.goto(url);
+  await page.setViewport({ width: 3840, height: 2160, deviceScaleFactor: 3 });
 
   const title = (await page.title()).replace(/[<>:"/\\|?*]+/g, "_");
   const dir = path.join(__dirname, "Output", title);
@@ -57,7 +58,7 @@ async function convertHTMLToGIF() {
   const outputPath = path.join(dir, "output.gif");
 
   const interval = 100;
-  const duration = 1000;
+  const duration = 2000;
   const frameCount = duration / interval;
 
   const tempFilePath = path.join(dir, "output.tmp");
@@ -65,7 +66,7 @@ async function convertHTMLToGIF() {
   const bar = new ProgressBar(":bar :percent", { total: frameCount });
 
   for (let i = 0; i < frameCount; i++) {
-    await page.screenshot({ path: `${tempFilePath}-${i}.png` });
+    await page.screenshot({ path: `${tempFilePath}-${i}.png`, type: "png" });
     await new Promise((resolve) => setTimeout(resolve, interval));
     bar.tick();
   }
@@ -75,7 +76,18 @@ async function convertHTMLToGIF() {
   await new Promise((resolve, reject) => {
     ffmpeg()
       .input(`${tempFilePath}-%d.png`)
-      .inputFPS(1 / (interval / 1000))
+      .complexFilter("fps=30,palettegen")
+      .output(`${tempFilePath}-palette.png`)
+      .on("end", resolve)
+      .on("error", reject)
+      .run();
+  });
+
+  await new Promise((resolve, reject) => {
+    ffmpeg()
+      .input(`${tempFilePath}-%d.png`)
+      .input(`${tempFilePath}-palette.png`)
+      .complexFilter("fps=30 [x]; [x][1:v] paletteuse")
       .output(outputPath)
       .on("end", resolve)
       .on("error", reject)
@@ -85,6 +97,7 @@ async function convertHTMLToGIF() {
   for (let i = 0; i < frameCount; i++) {
     fs.unlinkSync(`${tempFilePath}-${i}.png`);
   }
+  fs.unlinkSync(`${tempFilePath}-palette.png`);
 
   console.log("GIF creation successful!");
 }
