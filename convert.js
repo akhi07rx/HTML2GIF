@@ -5,9 +5,10 @@ ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
+const ProgressBar = require("progress");
 
 const CHROME_PATH =
-  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"; // Path to Chrome executable
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"; // Path to Chrome.exe
 
 const isValidURL = (url) => {
   const regex =
@@ -61,9 +62,12 @@ async function convertHTMLToGIF() {
 
   const tempFilePath = path.join(dir, "output.tmp");
 
+  const bar = new ProgressBar(":bar", { total: frameCount });
+
   for (let i = 0; i < frameCount; i++) {
     await page.screenshot({ path: `${tempFilePath}-${i}.png` });
     await new Promise((resolve) => setTimeout(resolve, interval));
+    bar.tick();
   }
 
   await browser.close();
@@ -81,6 +85,8 @@ async function convertHTMLToGIF() {
   for (let i = 0; i < frameCount; i++) {
     fs.unlinkSync(`${tempFilePath}-${i}.png`);
   }
+
+  console.log("GIF creation successful!");
 }
 
 convertHTMLToGIF();
